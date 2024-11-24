@@ -1,5 +1,5 @@
 import Login from './auth/login';
-import Signup from './auth/signup';
+import Signup from './auth/Signup';
 import './App.css';
 
 function App() {
