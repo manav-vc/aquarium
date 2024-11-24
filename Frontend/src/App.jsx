@@ -12,7 +12,7 @@ function App() {
     {/* Have to work on the logic on how to print all components  */}
        <Navbar/>
        <Login />
-       <Signup />
+       <Signup />{/* RishiGoyal */}
        <Dashboard/>
        <FishCatchMap/>
     </>
