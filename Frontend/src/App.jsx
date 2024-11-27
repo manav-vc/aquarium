@@ -5,24 +5,45 @@ import Signup from './auth/Signup';
 import Dashboard from './dashboard/dashboard';
 import FishCatchMap from './FishCatchMap';
 import Navbar from './Navbar';
+import { ThemeProvider } from './ColorTheme';
 import { UserProvider, UserContext } from './UserContext';
 import './App.css';
+
+const PrivateRoute = ({ children }) => {
+  const { user } = useContext(UserContext);
+  return user ? children : <Navigate to="/login" replace />;
+};
+
+const AppRoutes = () => {
+  const { user } = useContext(UserContext);
+
+  return (
+    <>
+      {user && <Navbar />}
+      <Routes>
+        <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
+        <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <Signup />} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/map" element={<PrivateRoute><FishCatchMap /></PrivateRoute>} />
+        <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+      </Routes>
+    </>
+  );
+};
 
 function App() {
 
 
   return (
-    <>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-      </Routes>
-      {/* Have to work on the logic on how to print all components  */}
-      {/*<Navbar/>Jainam Patel*/}
-      {/* <Login /> */}
-      {/*<Signup /> RishiGoyal */}
-      {/*<Dashboard/>*/}
-      {/*<FishCatchMap/>*/}
-    </>
+    <Router>
+    <ThemeProvider>
+      <UserProvider>
+        <div className="App">
+          <AppRoutes />
+        </div>
+      </UserProvider>
+    </ThemeProvider>
+  </Router>
   )
 }
 
