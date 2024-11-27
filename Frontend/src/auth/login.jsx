@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { ThemeContext } from "../ColorTheme";
+import { UserContext } from '../UserContext';
 import * as styles from "./login.css";
 
 export default function Login() {
