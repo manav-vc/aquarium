@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './auth/login';
-import Signup from './auth/Signup';
+import Signup from './auth/signup';
 import Dashboard from './dashboard/dashboard';
 import FishCatchMap from './FishCatchMap';
 import Navbar from './Navbar';
