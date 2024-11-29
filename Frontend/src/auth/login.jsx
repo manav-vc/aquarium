@@ -25,17 +25,7 @@ export default function Login() {
       setError(result.message || "Login failed");
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
-
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
-
+  
   return (
     <div className={`${styles.loginContainer} ${styles[theme]}`}>
       <div className={styles.loginCard}>
