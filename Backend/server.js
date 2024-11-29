@@ -49,3 +49,8 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+// Signup route
+app.post('/signup', async (req, res) => {
+  
+});
