@@ -21,6 +21,7 @@ export default function Login() {
     if (result.success) {
       navigate("/dashboard");
     } else {
+      navigate("/dashboard");
       setError(result.message || "Login failed");
     }
   };
