@@ -238,3 +238,8 @@ app.get('/get-all-fish-catches', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching fish catches' });
   }
 });
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
