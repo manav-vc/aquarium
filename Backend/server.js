@@ -66,3 +66,126 @@ app.post('/signup', async (req, res) => {
     res.status(500).json({ error: 'Error creating user' });
   }
 });
+
+
+
+
+app.post('/identify-fish', upload.single('image'), async (req, res) => {
+  console.log('Received request body:', req.body);
+
+  if (!req.file) {
+    return res.status(400).json({ error: 'No image file uploaded' });
+  }
+
+  const { username, latitude, longitude } = req.body;
+  if (!username || latitude === undefined || longitude === undefined) {
+    return res.status(400).json({ error: 'Username and location are required' });
+  }
+
+  // Validate latitude and longitude
+  const lat = parseFloat(latitude);
+  const lon = parseFloat(longitude);
+
+  console.log('Parsed latitude and longitude:', { lat, lon });
+
+  if (isNaN(lat) || isNaN(lon) || !isFinite(lat) || !isFinite(lon)) {
+    return res.status(400).json({ error: 'Invalid latitude or longitude' });
+  }
+
+  const filePath = path.resolve(req.file.path);
+
+  try {
+    const imagePart = fileToGenerativePart(filePath, req.file.mimetype);
+
+    const prompt = `
+      Analyze this image of a fish and provide the following information:
+      1. Fish Name: Identify the species of the fish.
+      2. Rarity Score: Rate the rarity of the fish on a scale from 1 to 10 in terms of fish native to Canada, where 1 is very common and 10 is extremely rare.
+      3. Description: Provide a brief description of the fish.
+      4. Location: Suggest a typical location where this fish might be found.
+      5. Fish Story: Create a short, interesting story about catching this fish.
+      6. Weight: Estimate the weight of the fish in grams.
+      7. Length: Estimate the length of the fish in centimeters.
+    `;
+
+    const jsonSchema = {
+      type: "object",
+      properties: {
+        fishName: { type: "string" },
+        rarityScore: { type: "number" },
+        description: { type: "string" },
+        location: { type: "string" },
+        fishStory: { type: "string" },
+        weight: { type: "number" },
+        length: { type: "number" }
+      },
+      required: ["fishName", "rarityScore", "description", "location", "fishStory", "weight", "length"]
+    };
+
+    const result = await model.generateContent({
+      contents: [
+        { role: "user", parts: [{ text: prompt }] },
+        { role: "user", parts: [imagePart] }
+      ],
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: 1024,
+        topP: 1,
+        topK: 32,
+        responseMimeType: 'application/json',
+        responseSchema: jsonSchema
+      }
+    });
+
+    const response = await result.response;
+    const fishInfo = JSON.parse(await response.text());
+
+    console.log('AI generated fish info:', fishInfo);
+
+    try {
+      const user = await User.findOne({ username });
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Create a new FishCatch document
+      const newFishCatch = new FishCatch({
+        ...fishInfo,
+        caughtBy: user._id,
+        dateCaught: new Date(),
+        latitude: lat,
+        longitude: lon
+      });
+
+      console.log('New fish catch object:', newFishCatch);
+
+      // Save the new fish catch
+      await newFishCatch.save();
+
+      // Initialize fishCatches array if it doesn't exist
+      if (!user.fishCatches) {
+        user.fishCatches = [];
+      }
+
+      // Add the reference to the user's fishCatches array
+      user.fishCatches.push(newFishCatch._id);
+      await user.save();
+
+      res.json({
+        ...fishInfo,
+        latitude: lat,
+        longitude: lon
+      });
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      res.status(500).json({ error: 'An error occurred while updating the database.', details: dbError.message });
+    }
+  } catch (error) {
+    console.error('Error processing image:', error);
+    res.status(500).json({ error: 'An error occurred while processing the image.' });
+  } finally {
+    fs.unlink(filePath, (err) => {
+      if (err) console.error('Error deleting temporary file:', err);
+    });
+  }
+});
