@@ -39,6 +39,7 @@ mongoose.connect(process.env.MONGO_CONNECTION, { useNewUrlParser: true, useUnifi
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
@@ -137,6 +138,7 @@ app.post('/identify-fish', upload.single('image'), async (req, res) => {
       }
     });
 
+    //console.log("Working");
     const response = await result.response;
     const fishInfo = JSON.parse(await response.text());
 
@@ -148,8 +150,6 @@ app.post('/identify-fish', upload.single('image'), async (req, res) => {
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
-
-
 
       // Create a new FishCatch document
       const newFishCatch = new FishCatch({
