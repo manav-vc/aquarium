@@ -143,7 +143,7 @@ app.post('/identify-fish', upload.single('image'), async (req, res) => {
     console.log('AI generated fish info:', fishInfo);
 
     try {
->>>>>>> 5feeb8013d29b331947d79171558ad3d52b25f00
+
       const user = await User.findOne({ username });
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -190,5 +190,51 @@ app.post('/identify-fish', upload.single('image'), async (req, res) => {
     fs.unlink(filePath, (err) => {
       if (err) console.error('Error deleting temporary file:', err);
     });
+  }
+});
+
+
+app.get('/get-all-fish-catches', async (req, res) => {
+  const { query, username } = req.query;
+
+  const filter = {};
+
+  if (query) {
+    const parsedRarity = parseFloat(query);
+
+    if (!isNaN(parsedRarity)) {
+      filter.rarityScore = parsedRarity;
+    } else {
+      filter.fishName = { $regex: query, $options: 'i' };
+    }
+  }
+
+  try {
+    let fishCatches;
+    if (username) {
+      const user = await User.findOne({ username });
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      filter.caughtBy = user._id;
+    }
+
+    fishCatches = await FishCatch.find(filter).populate('caughtBy', 'username');
+
+    // Transform the data to include the username and format the location
+    const formattedFishCatches = fishCatches.map(fishCatch => {
+      const catchObject = fishCatch.toObject();
+      return {
+        ...catchObject,
+        username: catchObject.caughtBy ? catchObject.caughtBy.username : 'Unknown User',
+        location: `${catchObject.latitude},${catchObject.longitude}`,
+        caughtBy: undefined // Remove the caughtBy field to avoid sending unnecessary data
+      };
+    });
+
+    res.json(formattedFishCatches);
+  } catch (error) {
+    console.error('Error fetching fish catches:', error);
+    res.status(500).json({ error: 'An error occurred while fetching fish catches' });
   }
 });
