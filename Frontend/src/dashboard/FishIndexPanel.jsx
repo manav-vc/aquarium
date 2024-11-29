@@ -89,7 +89,7 @@ export default function FishIndexPanel ({ onCatchSelect })  {
         ) : catches.length === 0 ? (
           <div >No fish catches found.</div>
         ) : (
-          <ul className={styles.catchList}>
+          <ul >
             {catches.map((fishCatch) => (
               <li key={fishCatch._id}  onClick={() => onCatchSelect(fishCatch)}>
                 <div >
