@@ -31,13 +31,13 @@ export default  function Signup(){
   };
 
   return (
-    <div className={`${styles.signupContainer} ${styles[theme]}`}>
-      <div className={styles.signupCard}>
-        <h1 className={styles.title}>Create Account</h1>
-        {error && <p className={styles.error}>{error}</p>}
-        <form onSubmit={handleSignup} className={styles.form}>
-          <div className={styles.inputGroup}>
-            <FaUser className={styles.icon} />
+    <div>
+      <div>
+        <h1>Create Account</h1>
+        {error && <p>{error}</p>}
+        <form onSubmit={handleSignup}>
+          <div>
+            <FaUser/>
             <input
               type="text"
               placeholder="Username"
@@ -46,8 +46,8 @@ export default  function Signup(){
               required
             />
           </div>
-          <div className={styles.inputGroup}>
-            <FaLock className={styles.icon} />
+          <div>
+            <FaLock/>
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Password"
@@ -57,14 +57,13 @@ export default  function Signup(){
             />
             <button
               type="button"
-              className={styles.showPassword}
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-          <div className={styles.inputGroup}>
-            <FaLock className={styles.icon} />
+          <div>
+            <FaLock />
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               placeholder="Confirm Password"
@@ -74,20 +73,19 @@ export default  function Signup(){
             />
             <button
               type="button"
-              className={styles.showPassword}
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-          <button type="submit" className={styles.signupButton}>
+          <button type="submit">
             Sign Up
           </button>
         </form>
-        <div className={styles.divider}>
+        <div>
           <span>or</span>
         </div>
-        <p className={styles.loginPrompt}>
+        <p>
           Already have an account?{' '}
           <span onClick={() => navigate('/login')}>Log in</span>
         </p>
