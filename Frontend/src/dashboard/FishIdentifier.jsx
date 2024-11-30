@@ -182,8 +182,13 @@ export default function FishIdentifier() {
   const resetCapture = () => {
     setImage(null);
     setFishInfo(null);
-    setIsResultsModalOpen(false);
     setAttachedImages([]);
+    setCurrentImageIndex(0);
+    setZoomLevel(1);
+    setIsResultsModalOpen(false);
+    setIsAttachedImagesModalOpen(false);
+    setShowUnlockedNotification(false);
+    setIsCameraModalOpen(false);
   };
 
   const generateFishJoke = (fishName) => {
