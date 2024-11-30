@@ -126,7 +126,7 @@ function OceanSkybox() {
   );
 }
 
-function FishBackground() {
+export default function FishBackground() {
   const [fishCatches, setFishCatches] = useState([]);
   const [selectedFish, setSelectedFish] = useState(null);
   const { user } = useContext(UserContext);
@@ -210,5 +210,3 @@ function FishBackground() {
     </div>
   );
 }
-
-export default FishBackground;
