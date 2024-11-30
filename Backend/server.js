@@ -88,6 +88,14 @@ app.post('/login', async (req, res) => {
 });
 
 
+function fileToGenerativePart(filePath, mimeType) {
+  return {
+    inlineData: {
+      data: Buffer.from(fs.readFileSync(filePath)).toString("base64"),
+      mimeType
+    },
+  };
+}
 
 app.post('/identify-fish', upload.single('image'), async (req, res) => {
   console.log('Received request body:', req.body);
@@ -256,6 +264,85 @@ app.get('/get-all-fish-catches', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching fish catches' });
   }
 });
+
+
+
+// Add this new route in your server.js file
+
+app.get('/user-fish-catches', async (req, res) => {
+  try {
+    const { username } = req.query;
+    if (!username) {
+      return res.status(400).json({ error: 'Username is required' });
+    }
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const fishCatches = await FishCatch.find({ caughtBy: user._id })
+      .sort({ dateCaught: -1 }) // Sort by date, newest first
+      .lean(); // Use lean() for better performance if you don't need Mongoose document methods
+
+    const formattedFishCatches = fishCatches.map(fishCatch => ({
+      ...fishCatch,
+      username: user.username,
+      location: `${fishCatch.latitude},${fishCatch.longitude}`,
+      caughtBy: undefined // Remove caughtBy to avoid sending unnecessary data
+    }));
+
+    res.json(formattedFishCatches);
+  } catch (error) {
+    console.error('Error fetching user fish catches:', error);
+    res.status(500).json({ error: 'An error occurred while fetching user fish catches' });
+  }
+});
+
+
+app.get('/recent-fish-catches', async (req, res) => {
+  const { query } = req.query;
+
+  const filter = {};
+
+  if (query) {
+    const parsedRarity = parseFloat(query);
+
+    if (!isNaN(parsedRarity)) {
+      filter.rarityScore = parsedRarity;
+    } else {
+      filter.fishName = { $regex: query, $options: 'i' };
+    }
+  }
+
+  try {
+    const recentCatches = await FishCatch.find(filter)
+      .sort({ dateCaught: -1 })
+      .limit(10)
+      .populate('caughtBy', 'username')
+      .select('-__v');
+
+    res.json(recentCatches);
+  } catch (error) {
+    console.error('Error fetching recent catches:', error);
+    res.status(500).json({ message: 'Error fetching recent catches', error: error.message });
+  }
+});
+
+
+app.get('/fish-details/:id', async (req, res) => {
+  try {
+    const fishCatch = await FishCatch.findById(req.params.id).populate('caughtBy', 'username');
+    if (!fishCatch) {
+      return res.status(404).json({ error: 'Fish catch not found' });
+    }
+    res.json(fishCatch);
+  } catch (error) {
+    console.error('Error fetching fish details:', error);
+    res.status(500).json({ error: 'An error occurred while fetching fish details' });
+  }
+});
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
