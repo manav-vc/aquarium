@@ -61,7 +61,7 @@ const FishCatchMap = () => {
 
   const fetchFishCatches = async () => {
     try {
-      const response = await fetch('http://localhost:3001/get-all-fish-catches', {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/get-all-fish-catches`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });

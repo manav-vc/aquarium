@@ -18,7 +18,7 @@ export default function RecentCatchesPanel({ onCatchSelect }) {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://localhost:3001/recent-fish-catches?query=${query}`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/recent-fish-catches?query=${query}`);
       if (!response.ok) throw new Error('Failed to fetch recent catches');
       const data = await response.json();
       setRecentCatches(data);

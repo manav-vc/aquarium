@@ -144,7 +144,7 @@ export default function FishIdentifier() {
     formData.append('longitude', location.longitude.toFixed(6));
 
     try {
-      const response = await fetch('http://localhost:3001/identify-fish', {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/identify-fish`, {
         method: 'POST',
         body: formData,
       });

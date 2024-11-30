@@ -136,7 +136,7 @@ export default function FishBackground() {
     const fetchFishCatches = async () => {
       if (!user) return;
       try {
-        const response = await fetch(`http://localhost:3001/get-all-fish-catches?username=${user.username}`);
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/get-all-fish-catches?username=${user.username}`);
         if (!response.ok) throw new Error('Failed to fetch fish catches');
         const data = await response.json();
         setFishCatches(data);
@@ -149,7 +149,7 @@ export default function FishBackground() {
 
     // Set up SSE for real-time updates
     if (user) {
-      eventSourceRef.current = new EventSource(`http://localhost:3001/fish-updates?username=${user.username}`);
+      eventSourceRef.current = new EventSource(`${import.meta.env.VITE_REACT_APP_API_URL}/fish-updates?username=${user.username}`);
       
       eventSourceRef.current.onmessage = (event) => {
         const newFish = JSON.parse(event.data);

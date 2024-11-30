@@ -16,7 +16,7 @@ export const UserProvider = ({ children }) => {
     try {
 
       //Request being send to backend server 
-      const response = await fetch('http://localhost:3001/login', {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -37,7 +37,7 @@ export const UserProvider = ({ children }) => {
 
   const signup = async (username, password) => {
     try {
-      const response = await fetch('http://localhost:3001/signup', {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

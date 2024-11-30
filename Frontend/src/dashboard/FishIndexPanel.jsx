@@ -21,7 +21,7 @@ export default function FishIndexPanel ({ onCatchSelect })  {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://localhost:3001/get-all-fish-catches?query=${query}&username=${user.username}`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/get-all-fish-catches?query=${query}&username=${user.username}`);
       if (!response.ok) throw new Error('Failed to fetch fish index');
       const data = await response.json();
       setCatches(data);

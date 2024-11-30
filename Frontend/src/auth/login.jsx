@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { ThemeContext } from "../ColorTheme";
 import { UserContext } from '../UserContext';
-import * as styles from "./login.css";
+import * as styles from "./login.module.css";
 
 export default function Login() {
   const [username, setUsername] = useState("");

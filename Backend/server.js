@@ -8,6 +8,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const { User, FishCatch } = require('./database'); // Make sure this path is correct
+
 // Create a new directory synchronously
 const newFolderPath = path.join(__dirname, 'uploads');
 
