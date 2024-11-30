@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ChevronDown, ChevronUp, Fish, Weight, Ruler, Search } from 'lucide-react';
 import { UserContext } from '../UserContext';
+import styles from './FishIndexPanel.module.css';
+
 
 export default function FishIndexPanel ({ onCatchSelect })  {
   const { user } = useContext(UserContext);
@@ -64,47 +66,47 @@ export default function FishIndexPanel ({ onCatchSelect })  {
   };
 
   return (
-    <div >
-      <div onClick={togglePanel}>
+    <div className={`${styles.panel} ${isExpanded ? styles.expanded : styles.minimized}`}>
+      <div className={styles.header} onClick={togglePanel}>
         <h2>Fish Index</h2>
         {isExpanded ? <ChevronUp /> : <ChevronDown />}
       </div>
 
-      <div>
-        <Search size={20} />
+      <div className={styles.searchContainer}>
+        <Search className={styles.searchIcon} size={20} />
         <input
           type="text"
           placeholder="Search by fish name or rarity..."
           value={searchQuery}
           onChange={handleSearch}
-          
+          className={styles.searchInput}
         />
       </div>
 
-      <div>
+      <div className={styles.content}>
         {loading ? (
-          <div></div>
+          <div className={styles.loader} ></div>
         ) : error ? (
-          <div>{error}</div>
+          <div className={styles.error}>{error}</div>
         ) : catches.length === 0 ? (
-          <div >No fish catches found.</div>
+          <div className={styles.noResults} >No fish catches found.</div>
         ) : (
-          <ul >
+          <ul className={styles.catchList} >
             {catches.map((fishCatch) => (
-              <li key={fishCatch._id}  onClick={() => onCatchSelect(fishCatch)}>
-                <div >
-                  <Fish  style={{ color: getFishColor(fishCatch.rarityScore) }} />
+              <li key={fishCatch._id} className={styles.catchItem}  onClick={() => onCatchSelect(fishCatch)}>
+                <div className={styles.catchHeader} >
+                  <Fish  className={styles.fishIcon} style={{ color: getFishColor(fishCatch.rarityScore) }} />
                   <h3>{fishCatch.fishName}</h3>
                 </div>
-                <div >
-                  <p >{format(new Date(fishCatch.dateCaught), 'MMM dd, yyyy HH:mm')}</p>
-                  <div >
+                <div className={styles.catchInfo} >
+                  <p className={styles.catchDate} >{format(new Date(fishCatch.dateCaught), 'MMM dd, yyyy HH:mm')}</p>
+                  <div className={styles.rarityBar} >
                     <div 
-                      
+                      className={styles.rarityFill}
                       style={{ width: `${fishCatch.rarityScore * 10}%` }}
                     ></div>
                   </div>
-                  <div >
+                  <div className={styles.catchDetails} >
                     <span><Weight size={16} /> {fishCatch.weight}g</span>
                     <span><Ruler size={16} /> {fishCatch.length}cm</span>
                     <span>Rarity: {fishCatch.rarityScore}/10</span>

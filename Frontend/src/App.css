@@ -1,42 +1,67 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* app.css */
+
+.App {
   text-align: center;
+  background: var(--bg);
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+:root {
+  --bg: #F9FAFB; /* Background color */
+  --bg2: #FFFFFF; /* Secondary background */
+  --text: #1F2937; /* Text color */
+  --primary: #3B82F6; /* Primary color */
+  --secondary: #10B981; /* Secondary color */
+  --accent: #F59E0B; /* Accent color */
+  --highlight: #EF4444; /* Highlight color */
+  --card-bg: #FFFFFF; /* Card background */
+  --hover: #E5E7EB; /* Hover color */
+  --shadow: rgba(0, 0, 0, 0.1); /* Shadow color */
+  --modal-bg: rgba(0, 0, 0, 0.8); /* Modal background */
+  --popup-bg-color: lightgray; 
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+[data-theme='dark'] {
+  --bg: #1F2937;
+  --bg2: #111827;
+  --text: #F9FAFB;
+  --primary: #60A5FA;
+  --secondary: #34D399;
+  --accent: #FBBF24;
+  --highlight: #F87171;
+  --card-bg: #1F2937;
+  --hover: #374151;
+  --shadow: rgba(255, 255, 255, 0.1);
+  --modal-bg: rgba(0, 0, 0, 0.8);
+  --popup-bg-color: black; 
 }
 
-.card {
-  padding: 2em;
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
 
-.read-the-docs {
-  color: #888;
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+html {
+  scroll-behavior: smooth;
 }
