@@ -34,28 +34,6 @@ export default function FishIndexPanel ({ onCatchSelect })  {
     }
   };
 
-  /*
-  useEffect(() => {
-    fetchRecentCatches();
-  }, []);
-
-  const fetchRecentCatches = async (query = '') => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`http://localhost:3001/recent-fish-catches?query=${query}`);
-      if (!response.ok) throw new Error('Failed to fetch recent catches');
-      const data = await response.json();
-      setRecentCatches(data);
-    } catch (error) {
-      console.error('Error fetching recent catches:', error);
-      setError('Failed to fetch recent catches. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-  */
-  
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
     fetchAllCatches(e.target.value);

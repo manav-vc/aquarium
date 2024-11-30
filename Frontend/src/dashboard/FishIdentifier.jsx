@@ -26,7 +26,6 @@ export default function FishIdentifier() {
   const [zoomLevel, setZoomLevel] = useState(1);
   const imageRef = useRef(null);
 
-
   useEffect(() => {
     if (isCameraModalOpen) {
       startCamera();
