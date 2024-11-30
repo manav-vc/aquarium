@@ -1,7 +1,8 @@
 import React from 'react';
 import { MdClose } from 'react-icons/md';
+import styles from './FishResultsModal.module.css';
 
-export default function FishResultsModal ({ fishInfo, image, onClose }){
+const FishResultsModal = ({ fishInfo, image, onClose }) => {
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -9,50 +10,52 @@ export default function FishResultsModal ({ fishInfo, image, onClose }){
   };
 
   return (
-    <div onClick={handleOverlayClick}>
-      <div>
-        <button onClick={onClose} aria-label="Close modal">
+    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+      <div className={styles.modalContent}>
+        <button onClick={onClose} className={styles.closeButton} aria-label="Close modal">
           <MdClose />
         </button>
-        <div>
+        <div className={styles.fishImageContainer}>
           <img src={URL.createObjectURL(image)} alt={fishInfo.fishName} className={styles.fishImage} />
         </div>
-        <h2>{fishInfo.fishName}</h2>
-        <p>{fishInfo.joke}</p>
+        <h2 className={styles.fishName}>{fishInfo.fishName}</h2>
+        <p className={styles.fishJoke}>{fishInfo.joke}</p>
 
-        <div>
-          <div>
-            <span>Rarity:</span>
-            <span>{fishInfo.rarityScore}/10</span>
+        <div className={styles.progressContainer}>
+          <div className={styles.statRow}>
+            <span className={styles.statLabel}>Rarity:</span>
+            <span className={styles.statValue}>{fishInfo.rarityScore}/10</span>
           </div>
-          <div>
-            <div style={{width: `${fishInfo.rarityScore * 10}%`}}></div>
+          <div className={styles.progressBar}>
+            <div className={styles.progress} style={{width: `${fishInfo.rarityScore * 10}%`}}></div>
           </div>
         </div>
 
-        <div>
-          <span>Weight:</span>
-          <span>{fishInfo.weight} grams</span>
+        <div className={styles.statRow}>
+          <span className={styles.statLabel}>Weight:</span>
+          <span className={styles.statValue}>{fishInfo.weight} grams</span>
         </div>
-        <div>
-          <span>Length:</span>
-          <span>{fishInfo.length} cm</span>
+        <div className={styles.statRow}>
+          <span className={styles.statLabel}>Length:</span>
+          <span className={styles.statValue}>{fishInfo.length} cm</span>
         </div>
-        <div>
-          <span>Date Caught:</span>
-          <span>{fishInfo.dateCaught}</span>
+        <div className={styles.statRow}>
+          <span className={styles.statLabel}>Date Caught:</span>
+          <span className={styles.statValue}>{fishInfo.dateCaught}</span>
         </div>
-        <div>
-          <span>Location:</span>
-          <span>{fishInfo.location}</span>
+        <div className={styles.statRow}>
+          <span className={styles.statLabel}>Location:</span>
+          <span className={styles.statValue}>{fishInfo.location}</span>
         </div>
 
-        <h3>Description</h3>
-        <p>{fishInfo.description}</p>
+        <h3 className={styles.sectionTitle}>Description</h3>
+        <p className={styles.sectionContent}>{fishInfo.description}</p>
 
-        <h3>Fish Tale</h3>
-        <p>{fishInfo.fishStory}</p>
+        <h3 className={styles.sectionTitle}>Fish Tale</h3>
+        <p className={styles.sectionContent}>{fishInfo.fishStory}</p>
       </div>
     </div>
   );
 };
+
+export default FishResultsModal;

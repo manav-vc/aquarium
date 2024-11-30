@@ -284,7 +284,7 @@ export default function FishIdentifier() {
     {isAttachedImagesModalOpen && (
       <div className={styles.modal} >
         <div className={styles.modalContent} >
-          <h2 className={styles.modalTitle} >Attached Images</h2>
+          <h2 className={styles.modalTitle}>Attached Images</h2>
           <div className={styles.imageViewerContainer}>
             <img 
               ref={imageRef}
