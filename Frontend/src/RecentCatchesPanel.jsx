@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ChevronDown, ChevronUp, Fish, Weight, Ruler, Search } from 'lucide-react';
-import './RecentCatchesPanel.css';
+import './RecentCatchesPanel.module.css';
 
 export default function RecentCatchesPanel({ onCatchSelect }) {
   const [recentCatches, setRecentCatches] = useState([]);

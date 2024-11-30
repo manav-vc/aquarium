@@ -4,6 +4,7 @@ import { FaFish } from 'react-icons/fa';
 import FishResultsModal from './FishResultsModal';
 import FishUnlockedNotification from './FishUnlockedNotification';
 import { UserContext } from '../UserContext';
+import styles from './FishIdentifier.module.css';
 
 export default function FishIdentifier() {
   const [image, setImage] = useState(null);
@@ -202,17 +203,17 @@ export default function FishIdentifier() {
   };
 
   if (!user) {
-    return <div >Please log in to use AquaScan</div>;
+    return <div className={styles.loginPrompt} >Please log in to use AquaScan</div>;
   }
 
   return (
-    <div >
-      <div>
-        <div >
-          <button onClick={() => setIsCameraModalOpen(true)} >
+    <div className={styles.container} >
+      <div className={styles.captureContainer} >
+        <div className={styles.actionButtons}>
+          <button onClick={() => setIsCameraModalOpen(true)} className={`${styles.actionButton} ${styles.cameraButton}`}>
             <MdCamera /> Capture Fish
           </button>
-          <button onClick={() => fileInputRef.current.click()} >
+          <button onClick={() => fileInputRef.current.click()} className={`${styles.actionButton} ${styles.uploadButton}`} >
             <MdFileUpload /> Upload Fish Photo
           </button>
           <input
@@ -223,10 +224,10 @@ export default function FishIdentifier() {
           />
           {image && location && (
             <>
-              <button onClick={analyzeFish} disabled={isLoading}>
+              <button onClick={analyzeFish} className={`${styles.actionButton} ${styles.analyzeButton}`} disabled={isLoading}>
                 <MdAnalytics /> {isLoading ? 'Analyzing...' : 'Identify Fish'}
               </button>
-              <button onClick={resetCapture} >
+              <button onClick={resetCapture} className={`${styles.actionButton} ${styles.resetButton}`} >
                 <MdAutorenew /> Start Over
               </button>
             </>
@@ -234,6 +235,7 @@ export default function FishIdentifier() {
           {attachedImages.length > 0 && (
             <button 
               onClick={() => setIsAttachedImagesModalOpen(true)} 
+              className={styles.viewAttachedButton}
             >
               <MdImage /> View Attached Images ({attachedImages.length})
             </button>
@@ -242,22 +244,23 @@ export default function FishIdentifier() {
       </div>
 
       {isCameraModalOpen && (
-        <div >
-          <div>
+        <div className={styles.modal} >
+          <div className={styles.modalContent}>
             <button 
               onClick={() => setIsCameraModalOpen(false)} 
               aria-label="Close camera modal"
+              className={styles.closeButton}
             >
               <MdClose />
             </button>
-            <div >
-              <video ref={videoRef} autoPlay playsInline/>
-              <div >
-                <FaFish />
+            <div className={styles.cameraPreview} >
+              <video ref={videoRef} autoPlay playsInline className={styles.videoPreview}/>
+              <div className={styles.cameraOverlay}>
+                <FaFish className={styles.overlayIcon}/>
               </div>
             </div>
-            <div>
-              <button onClick={captureImage}>Capture Fish</button>
+            <div className={styles.modalActions} >
+              <button onClick={captureImage} className={styles.captureButton} >Capture Fish</button>
             </div>
           </div>
         </div>
@@ -279,24 +282,25 @@ export default function FishIdentifier() {
       )}
 
     {isAttachedImagesModalOpen && (
-      <div >
-        <div >
-          <h2 >Attached Images</h2>
-          <div>
+      <div className={styles.modal} >
+        <div className={styles.modalContent} >
+          <h2 className={styles.modalTitle} >Attached Images</h2>
+          <div className={styles.imageViewerContainer}>
             <img 
               ref={imageRef}
               src={URL.createObjectURL(attachedImages[currentImageIndex])}
               alt={`Attached image ${currentImageIndex + 1}`}
+              className={styles.attachedImage}
               style={{ transform: `scale(${zoomLevel})` }}
               onClick={handleImageClick}
             />
-            <div >
-              <button onClick={prevImage} >Previous</button>
-              <button onClick={handleZoomOut}><MdZoomOut /></button>
-              <button onClick={handleZoomIn} ><MdZoomIn /></button>
-              <button onClick={nextImage} >Next</button>
+            <div className={styles.imageControls} >
+              <button onClick={prevImage} className={styles.imageNavButton} >Previous</button>
+              <button onClick={handleZoomOut} className={styles.zoomButton}><MdZoomOut /></button>
+              <button onClick={handleZoomIn} className={styles.zoomButton} ><MdZoomIn /></button>
+              <button onClick={nextImage} className={styles.imageNavButton}>Next</button>
             </div>
-            <p >
+            <p className={styles.imageCounter} >
               Image {currentImageIndex + 1} of {attachedImages.length}
             </p>
           </div>
@@ -305,6 +309,8 @@ export default function FishIdentifier() {
               setIsAttachedImagesModalOpen(false);
               setZoomLevel(1);
             }} 
+
+            className={styles.closeButton}
           >
             <MdClose />
           </button>
