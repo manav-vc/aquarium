@@ -29,9 +29,9 @@ export default function Dashboard() {
       <div className={styles.fishIdentifier} >
         <FishIdentifier />
       </div>
-      <div className={styles.fishIndex} >
+      {/* <div className={styles.fishIndex} >
         <FishIndexPanel />
-      </div>
+      </div> */}
        
       
     </div>
