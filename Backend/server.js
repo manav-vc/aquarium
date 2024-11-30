@@ -4,7 +4,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const fs = require("fs");
 const path = require('path');
 require('dotenv').config();
-const cors = require('cors');
+// const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const { User, FishCatch } = require('./database'); // Make sure this path is correct
@@ -21,12 +21,12 @@ try {
 
 const app = express();
 
-app.use(cors({
-  origin: 'http://localhost:5173',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
-  credentials: true
-}));
+// app.use(cors({
+//   origin: 'http://localhost:5173',
+//   methods: ['GET', 'POST'],
+//   allowedHeaders: ['Content-Type'],
+//   credentials: true
+// }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
