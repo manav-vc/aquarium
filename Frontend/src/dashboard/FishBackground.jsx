@@ -4,7 +4,7 @@ import { OrbitControls, Sphere, useTexture } from "@react-three/drei";
 import { ClownFishModel } from "../components/ClownFishComponent";
 import { TroutFishModel } from "../components/TroutFishComponent";
 import { CarpFishModel } from "../components/CarpFishComponent";
-import { DoubleSide, RepeatWrapping } from "three";
+import { RepeatWrapping } from "three";
 import * as THREE from "three";
 import FishModal from "./FishModal";
 import Corals from "../components/Corals";

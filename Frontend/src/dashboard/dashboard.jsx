@@ -23,12 +23,13 @@ export default function Dashboard() {
 
   return (
     <div className={styles.Dashboard}>
+       <div className={styles.fishIdentifier} >
+        <FishIdentifier />
+      </div>
       <div className={styles.fishBackground}>
         <FishBackground />
       </div>
-      <div className={styles.fishIdentifier} >
-        <FishIdentifier />
-      </div>
+     
       <div className={styles.fishIndex} >
         <FishIndexPanel />
       </div>

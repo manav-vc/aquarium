@@ -221,6 +221,7 @@ export default function FishIdentifier() {
             ref={fileInputRef}
             onChange={handleFileUpload}
             accept="image/*"
+            style={{ display: 'none' }}
           />
           {image && location && (
             <>

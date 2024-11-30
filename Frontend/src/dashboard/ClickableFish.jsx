@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "@react-three/drei";
 
-function ClickableFish({ fish, index, onClick, ModelComponent }) {
+export default function ClickableFish({ fish, index, onClick, ModelComponent }) {
   const handleClick = (event) => {
     event.stopPropagation();
     onClick(fish);
@@ -22,5 +22,3 @@ function ClickableFish({ fish, index, onClick, ModelComponent }) {
     </group>
   );
 }
-
-export default ClickableFish;
