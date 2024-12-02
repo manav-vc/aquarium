@@ -22,7 +22,15 @@ try {
 const app = express();
 
 app.use(cors({
-  origin: 'https://live-aquaria.onrender.com', // Allow requests from your frontend domain
+  origin: (origin, callback) => {
+    const allowedOrigins = ['https://live-aquaria.onrender.com', 'http://localhost:5173'];
+    // Allow requests with no origin (e.g., mobile apps or server-to-server requests)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // List allowed HTTP methods
   credentials: true, // Include credentials like cookies
 }));
