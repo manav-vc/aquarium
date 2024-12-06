@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaLock, FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
+import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ThemeContext } from '../ColorTheme';
 import { UserContext } from '../UserContext';
 import styles from './Signup.module.css';
@@ -30,9 +30,7 @@ const Signup = () => {
     }
   };
 
-  const handleGoogleSignup = () => {
-    console.log('Google signup button clicked');
-  };
+  
 
   return (
     <div className={`${styles.signupContainer} ${styles[theme]}`}>
@@ -91,10 +89,7 @@ const Signup = () => {
         <div className={styles.divider}>
           <span>or</span>
         </div>
-        <button onClick={handleGoogleSignup} className={styles.googleButton}>
-          <FaGoogle className={styles.googleIcon} />
-          Sign up with Google
-        </button>
+        
         <p className={styles.loginPrompt}>
           Already have an account?{' '}
           <span onClick={() => navigate('/login')}>Log in</span>
