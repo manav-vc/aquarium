@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ThemeContext } from '../ColorTheme';
 import { UserContext } from '../UserContext';
+import styles from './Signup.module.css';
 
-export default  function Signup(){
+const Signup = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -29,14 +30,16 @@ export default  function Signup(){
     }
   };
 
+  
+
   return (
-    <div>
-      <div>
-        <h1>Create Account</h1>
-        {error && <p>{error}</p>}
-        <form onSubmit={handleSignup}>
-          <div>
-            <FaUser/>
+    <div className={`${styles.signupContainer} ${styles[theme]}`}>
+      <div className={styles.signupCard}>
+        <h1 className={styles.title}>Create Account</h1>
+        {error && <p className={styles.error}>{error}</p>}
+        <form onSubmit={handleSignup} className={styles.form}>
+          <div className={styles.inputGroup}>
+            <FaUser className={styles.icon} />
             <input
               type="text"
               placeholder="Username"
@@ -45,8 +48,8 @@ export default  function Signup(){
               required
             />
           </div>
-          <div>
-            <FaLock/>
+          <div className={styles.inputGroup}>
+            <FaLock className={styles.icon} />
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Password"
@@ -56,13 +59,14 @@ export default  function Signup(){
             />
             <button
               type="button"
+              className={styles.showPassword}
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-          <div>
-            <FaLock />
+          <div className={styles.inputGroup}>
+            <FaLock className={styles.icon} />
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               placeholder="Confirm Password"
@@ -72,19 +76,21 @@ export default  function Signup(){
             />
             <button
               type="button"
+              className={styles.showPassword}
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-          <button type="submit">
+          <button type="submit" className={styles.signupButton}>
             Sign Up
           </button>
         </form>
-        <div>
+        <div className={styles.divider}>
           <span>or</span>
         </div>
-        <p>
+        
+        <p className={styles.loginPrompt}>
           Already have an account?{' '}
           <span onClick={() => navigate('/login')}>Log in</span>
         </p>
@@ -92,3 +98,5 @@ export default  function Signup(){
     </div>
   );
 };
+
+export default Signup;
