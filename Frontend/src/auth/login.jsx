@@ -15,17 +15,18 @@ export default function Login() {
   const [loading, setLoading] = useState(true);
   const { login } = useContext(UserContext);
 
+
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     const result = await login(username, password);
     if (result.success) {
-      navigate("/dashboard");
+      navigate('/dashboard');
     } else {
-      navigate("/dashboard");
-      setError(result.message || "Login failed");
+      setError(result.error);
     }
-  };
-  
+  }; 
+
   return (
     <div className={`${styles.loginContainer} ${styles[theme]}`}>
       <div className={styles.loginCard}>
