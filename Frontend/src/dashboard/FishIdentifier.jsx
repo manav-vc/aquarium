@@ -237,14 +237,6 @@ export default function FishIdentifier() {
               </button>
             </>
           )}
-          {attachedImages.length > 0 && (
-            <button 
-              onClick={() => setIsAttachedImagesModalOpen(true)} 
-              className={styles.viewAttachedButton}
-            >
-              <MdImage /> View Attached Images ({attachedImages.length})
-            </button>
-          )}
         </div>
       </div>
 
@@ -285,43 +277,6 @@ export default function FishIdentifier() {
           onClose={() => setIsResultsModalOpen(false)}
         />
       )}
-
-    {isAttachedImagesModalOpen && (
-      <div className={styles.modal} >
-        <div className={styles.modalContent} >
-          <h2 className={styles.modalTitle}>Attached Images</h2>
-          <div className={styles.imageViewerContainer}>
-            <img 
-              ref={imageRef}
-              src={URL.createObjectURL(attachedImages[currentImageIndex])}
-              alt={`Attached image ${currentImageIndex + 1}`}
-              className={styles.attachedImage}
-              style={{ transform: `scale(${zoomLevel})` }}
-              onClick={handleImageClick}
-            />
-            <div className={styles.imageControls} >
-              <button onClick={prevImage} className={styles.imageNavButton} >Previous</button>
-              <button onClick={handleZoomOut} className={styles.zoomButton}><MdZoomOut /></button>
-              <button onClick={handleZoomIn} className={styles.zoomButton} ><MdZoomIn /></button>
-              <button onClick={nextImage} className={styles.imageNavButton}>Next</button>
-            </div>
-            <p className={styles.imageCounter} >
-              Image {currentImageIndex + 1} of {attachedImages.length}
-            </p>
-          </div>
-          <button 
-            onClick={() => {
-              setIsAttachedImagesModalOpen(false);
-              setZoomLevel(1);
-            }} 
-
-            className={styles.closeButton}
-          >
-            <MdClose />
-          </button>
-        </div>
-      </div>
-    )}
     </div>
   );
 };
