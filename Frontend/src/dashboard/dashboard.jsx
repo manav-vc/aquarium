@@ -18,22 +18,20 @@ export default function Dashboard() {
   }, [user, navigate]);
 
   if (!user) {
-    return null;
+    return null; // We could think of implementing a new loading feature in here 
   }
 
   return (
     <div className={styles.Dashboard}>
       <div className={styles.fishBackground}>
-        <FishBackground />
+        <FishBackground/>
       </div>
       <div className={styles.fishIdentifier} >
-        <FishIdentifier />
+        <FishIdentifier/>
       </div>
       <div className={styles.fishIndex} >
-        <FishIndexPanel />
+        <FishIndexPanel/>
       </div>
-       
-      
     </div>
   );
 };

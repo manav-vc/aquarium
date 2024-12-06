@@ -3,10 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 .container {
-  width: 100vw;
+  width: 60vw;
   min-height: 100vh;
   position: absolute;
   display: flex;
+  left: 0;
   flex-direction: column;
   justify-content: flex-end; /* Aligns the buttons to the bottom */
   z-index: 5;
