@@ -306,7 +306,7 @@
 
 /* viewer controller */
 .imageViewerContainer {
-  width: 100%;
+  width: 100vh;
   max-width: 800px;
   height: 60vh;
   margin: 0 auto;
