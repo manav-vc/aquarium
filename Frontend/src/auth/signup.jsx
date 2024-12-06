@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ThemeContext } from '../ColorTheme';
 import { UserContext } from '../UserContext';
-import styles from './Signup.module.css';
+import styles from './signup.module.css';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
