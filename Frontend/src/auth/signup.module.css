@@ -100,13 +100,42 @@
   .signupButton:hover {
     background: var(--secondary);
   }
-  
-  .googleButton {
-    background: var(--bg);
-    color: var(--text);
+  .divider {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--text);
+  }
+  
+  .divider span {
+    padding: 0 10px;
+    color: var(--text);
+    font-size: 14px;
+    box-sizing: border-box;
+  
+  }
+  
+  .loginPrompt {
+    text-align: center;
     margin-top: 20px;
-  }  
+    color: var(--text);
+    font-size: 14px;
+  }
+  
+  .loginPrompt span {
+    color: var(--primary);
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .loginPrompt span:hover {
+    text-decoration: underline;
+  }
+  
