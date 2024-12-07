@@ -42,13 +42,13 @@ Many fishing enthusiasts lack a meaningful way to document their catches beyond 
 
 2. Install backend dependencies:
    ```
-   cd backend
+   cd Backend
    npm install
    ```
 
 3. Install frontend dependencies:
    ```
-   cd ../frontend
+   cd ../Frontend
    npm install
    ```
 
@@ -56,13 +56,13 @@ Many fishing enthusiasts lack a meaningful way to document their catches beyond 
 
 1. Start the backend server:
    ```
-   cd backend
-   node server2.js
+   cd Backend
+   node server.js
    ```
 
 2. In a new terminal, start the frontend:
    ```
-   cd frontend
+   cd Frontend
    npm run dev
    ```
 
