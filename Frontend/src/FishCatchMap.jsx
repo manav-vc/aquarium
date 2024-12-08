@@ -4,7 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import moment from 'moment-timezone';
 import { useNavigate } from 'react-router-dom';
-import { ThemeContext } from './ColorTheme';
 import { UserContext } from './UserContext';
 import RecentCatchesPanel from './RecentCatchesPanel';
 import styles from './FishCatchMap.module.css';
