@@ -77,7 +77,6 @@ const fishModelMatcher = (fishName) => {
     return CarpFishModel;
   }
   
-  // Add more specific fish types here as you add more models
   
   // If no specific match, return a random model
   const models = [ClownFishModel, TroutFishModel, CarpFishModel]; // Add more models to this array as you create them
