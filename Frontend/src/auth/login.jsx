@@ -5,7 +5,9 @@ import { ThemeContext } from "../ColorTheme";
 import { UserContext } from '../UserContext';
 import * as styles from "./login.module.css";
 
+
 export default function Login() {
+  //useState to store the username and password
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +18,7 @@ export default function Login() {
   const { login } = useContext(UserContext);
 
 
-  
+  //function to check if the user is already logged in
   const handleLogin = async (e) => {
     e.preventDefault();
     const result = await login(username, password);
@@ -48,6 +50,7 @@ export default function Login() {
           <div className={styles.inputGroup}>
             <FaLock className={styles.icon} />
             <input
+            //ternary operator to check if the showPassword is true or false
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
