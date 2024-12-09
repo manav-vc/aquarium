@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { MdImage, MdCamera, MdFileUpload, MdAutorenew, MdAnalytics, MdClose, MdZoomIn, MdZoomOut } from 'react-icons/md';
+import { MdCamera, MdFileUpload, MdAutorenew, MdAnalytics, MdClose } from 'react-icons/md';
 import { FaFish } from 'react-icons/fa';
 import FishResultsModal from './FishResultsModal';
 import FishUnlockedNotification from './FishUnlockedNotification';
@@ -8,12 +8,10 @@ import styles from './FishIdentifier.module.css';
 
 export default function FishIdentifier() {
   const [image, setImage] = useState(null);
-  const [attachedImages, setAttachedImages] = useState([]);
   const [fishInfo, setFishInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
-  const [isAttachedImagesModalOpen, setIsAttachedImagesModalOpen] = useState(false);
   const [showUnlockedNotification, setShowUnlockedNotification] = useState(false);
   const [location, setLocation] = useState(null);
   const videoRef = useRef(null);
@@ -22,10 +20,8 @@ export default function FishIdentifier() {
   const streamRef = useRef(null);
   const { user } = useContext(UserContext);
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [zoomLevel, setZoomLevel] = useState(1);
-  const imageRef = useRef(null);
-
+  //So whenever we use the caputre button it changes the isCameraModelOpen state to true and
+  //due to which we run the startCamera and stop camera based on the state of that function 
   useEffect(() => {
     if (isCameraModalOpen) {
       startCamera();
@@ -35,6 +31,8 @@ export default function FishIdentifier() {
     };
   }, [isCameraModalOpen]);
 
+
+  //When the user catches the fish we are storing the location in setLocation for the Map feature  
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -54,9 +52,13 @@ export default function FishIdentifier() {
     }
   }, []);
 
+
+  //This function basically starts the camera 
   const startCamera = async () => {
     setIsLoading(true);
     try {
+
+      //Asks the browser to assess the camera   
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       streamRef.current = stream;
       if (videoRef.current) {
@@ -71,6 +73,7 @@ export default function FishIdentifier() {
     }
   };
 
+  //This function allows the user to 
   const stopCamera = () => {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
@@ -81,34 +84,8 @@ export default function FishIdentifier() {
     }
   };
 
-  const handleZoomIn = () => {
-    setZoomLevel(prevZoom => Math.min(prevZoom + 0.1, 3));
-  };
-
-  const handleZoomOut = () => {
-    setZoomLevel(prevZoom => Math.max(prevZoom - 0.1, 0.5));
-  };
-
-  const handleImageClick = (e) => {
-    if (imageRef.current) {
-      const rect = imageRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      
-      imageRef.current.style.transformOrigin = `${x * 100}% ${y * 100}%`;
-    }
-  };
-
-  const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % attachedImages.length);
-    setZoomLevel(1);
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + attachedImages.length) % attachedImages.length);
-    setZoomLevel(1);
-  };
-
+  // This function "captures" a single frame from a video feed displayed on the screen and converts it into
+  //  a JPEG image. The resulting image is stored in state and can be used in future .
 
   const captureImage = () => {
     if (videoRef.current && canvasRef.current) {
@@ -116,20 +93,22 @@ export default function FishIdentifier() {
       context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
       canvasRef.current.toBlob((blob) => {
         setImage(blob);
-        setAttachedImages(prev => [...prev, blob]);
         setIsCameraModalOpen(false);
       }, 'image/jpeg');
     }
   };
 
+
+  //This function allows the user to upload a fiah image and store it in state
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       setImage(file);
-      setAttachedImages(prev => [...prev, file]);
     }
   };
 
+
+  //This function helps analyse the image that we uploded with the help of GEmini 1.5 flash model in the backend
   const analyzeFish = async () => {
     if (!image || !user || !location) {
       alert('Missing image, user, or location data. Please try again.');
@@ -157,8 +136,7 @@ export default function FishIdentifier() {
       const data = await response.json();
       setFishInfo({
         ...data,
-        dateCaught: new Date().toLocaleString(),
-        joke: generateFishJoke(data.fishName)
+        dateCaught: new Date().toLocaleString()
       });
 
       // Show the unlocked notification
@@ -175,39 +153,23 @@ export default function FishIdentifier() {
       alert(error.message || 'Failed to analyze fish. Please try again.');
     } finally {
       setIsLoading(false);
-      setAttachedImages([]);
     }
   };
 
+  //We were trying to implement this feature but right now it does not work . What it does is we are trying to 
+  //refresh the eintire three.js environment 
   const resetCapture = () => {
     setImage(null);
     setFishInfo(null);
-    setAttachedImages([]);
     setCurrentImageIndex(0);
     setZoomLevel(1);
     setIsResultsModalOpen(false);
-    setIsAttachedImagesModalOpen(false);
     setShowUnlockedNotification(false);
     setIsCameraModalOpen(false);
   };
 
-  const generateFishJoke = (fishName) => {
-    const jokes = [
-      `Why was the ${fishName} bad at basketball? It was always getting caught in the net!`,
-      `What do you call a ${fishName} wearing a bowtie? So-fish-ticated!`,
-      `How does a ${fishName} go to war? In a tank!`,
-      `Why don't ${fishName}s play soccer? They're afraid of the net!`,
-      `What do you call a ${fishName} with no eyes? Fsh!`,
-      `How did the ${fishName} find out it was in trouble? It was on the hook!`,
-      `How did the ${fishName} get rich? Phishing!`,
-      `Where do ${fishName}s get their energy from? Nuclear fishion!`,
-      `Where do ${fishName}s store their money? In the river bank!`,
-    ];
-    return jokes[Math.floor(Math.random() * jokes.length)];
-  };
-
   if (!user) {
-    return <div className={styles.loginPrompt} >Please log in to use AquaScan</div>;
+    return <div className={styles.loginPrompt} >Please log in to use Live Aquaria</div>;
   }
 
   return (

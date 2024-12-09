@@ -23,12 +23,18 @@ export default function Dashboard() {
 
   return (
     <div className={styles.Dashboard}>
+      
+      {/* This is the 3D aquarium component */}
       <div className={styles.fishBackground}>
         <FishBackground/>
       </div>
+
+      {/* This component handles all the task related to capturing and analyzing a fish  */}
       <div className={styles.fishIdentifier} >
         <FishIdentifier/>
       </div>
+
+      {/* This shows the fish detail present in the aquarium  */}
       <div className={styles.fishIndex} >
         <FishIndexPanel/>
       </div>

@@ -5,6 +5,8 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
+
+  //To check whether we have the previously stored details in the localstorage
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -12,6 +14,7 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
+  //login function to log in the user 
   const login = async (username, password) => {
     try {
 
@@ -35,6 +38,8 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+
+  //This is the sign up function for the first time user 
   const signup = async (username, password) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/signup`, {
@@ -56,12 +61,15 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  //This function will logout the current user and will remove the data from the localstorage
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
   };
 
   return (
+
+    //This means whoever uses this UserContext provide them with the values in the "values" attribute 
     <UserContext.Provider value={{ user, login, signup, logout }}>
       {children}
     </UserContext.Provider>

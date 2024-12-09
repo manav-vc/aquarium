@@ -6,7 +6,6 @@ import { TroutFishModel } from "../components/TroutFishComponent";
 import { CarpFishModel } from "../components/CarpFishComponent";
 import { RepeatWrapping } from "three";
 import * as THREE from "three";
-import FishModal from "./FishModal";
 import Corals from "../components/Corals";
 import ClickableFish from "./ClickableFish";
 import styles from './FishBackground.module.css';
@@ -127,7 +126,6 @@ function OceanSkybox() {
 
 export default function FishBackground() {
   const [fishCatches, setFishCatches] = useState([]);
-  const [selectedFish, setSelectedFish] = useState(null);
   const { user } = useContext(UserContext);
   const eventSourceRef = useRef(null);
 
@@ -168,7 +166,6 @@ export default function FishBackground() {
     };
   }, [user]);
 
-  const handleFishClick = (fish) => setSelectedFish(fish);
 
   return (
     <div className={styles.main}>
@@ -196,16 +193,12 @@ export default function FishBackground() {
               key={fish._id}
               fish={fish}
               index={index}
-              onClick={handleFishClick}
               ModelComponent={fishModelMatcher(fish.fishName)}
             />
           ))}
           <Corals dimensions={[35, 19.8, 30]} num={100} />
         </Suspense>
       </Canvas>
-      {selectedFish && (
-        <FishModal fish={selectedFish} onClose={() => setSelectedFish(null)} />
-      )}
     </div>
   );
 }

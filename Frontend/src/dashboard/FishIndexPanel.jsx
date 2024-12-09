@@ -17,6 +17,8 @@ export default function FishIndexPanel ({ onCatchSelect })  {
     fetchAllCatches();
   }, []);
 
+
+  //This is trying to fatch the fish from the mongooDb caught by that specific user  
   const fetchAllCatches = async (query = '') => {
     setLoading(true);
     setError(null);
@@ -34,13 +36,28 @@ export default function FishIndexPanel ({ onCatchSelect })  {
     }
   };
 
+
+// This sets the search asked by the user and runs the fetchAllCatches to fetch the fishes caught 
+//by that specific user 
+
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
     fetchAllCatches(e.target.value);
   };
 
+  
+  //This one is used to toggle the fishindex panel in the right hand side 
   const togglePanel = () => {
     setIsExpanded(!isExpanded);
+  };
+
+
+  //In the fishIndex panel for each fish record, we have a fish symbol at the start . 
+  //This function sets the color of that fish based on the rarity on the color scale from blue to red 
+   
+  const getFishColor = (rarityScore) => {
+    const hue = 200 - (rarityScore * 20); // Blue (200) to Red (0)
+    return `hsl(${hue}, 100%, 50%)`;
   };
 
   return (
@@ -99,7 +116,4 @@ export default function FishIndexPanel ({ onCatchSelect })  {
   );
 };
 
-const getFishColor = (rarityScore) => {
-  const hue = 200 - (rarityScore * 20); // Blue (200) to Red (0)
-  return `hsl(${hue}, 100%, 50%)`;
-};
+
