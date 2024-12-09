@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'; // UseState and useEffect keep track of data and trigger code after renders. useContext lets us access global user info
+import React, { useState, useEffect, useContext } from 'react'; 
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'; // Provides map components that plug into React's lifecycle
 import 'leaflet/dist/leaflet.css'; // This CSS ensures the map tiles and icons display correctly
 import L from 'leaflet'; // The main mapping library that React-Leaflet builds upon
 import moment from 'moment-timezone'; // Helps format the date and time data for display
-import { useNavigate } from 'react-router-dom'; // Allows code-based navigation without a direct user click
-import { UserContext } from './UserContext'; // The global user state we rely on to determine if someone is logged in
-import RecentCatchesPanel from './RecentCatchesPanel'; // A separate component that lists recent catches in a panel
+import { useNavigate } from 'react-router-dom'; 
+import { UserContext } from './UserContext'; 
+import RecentCatchesPanel from './RecentCatchesPanel'; 
 import styles from './FishCatchMap.module.css';
 
 // Assign a color to each fish based on its name, so each fish type always has a consistent color
