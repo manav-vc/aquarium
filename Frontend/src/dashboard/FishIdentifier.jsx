@@ -137,11 +137,10 @@ export default function FishIdentifier() {
         console.error("Error capturing photo:", error);
       });
     }
-
   };
 
 
-  //This function allows the user to upload a fiah image and store it in state
+  //This function allows the user to upload a fish image and store it in state
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
