@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { MdCamera, MdFileUpload, MdAutorenew, MdAnalytics, MdClose } from 'react-icons/md';
+import { MdImage, MdCamera, MdFileUpload, MdAutorenew, MdAnalytics, MdClose, MdZoomIn, MdZoomOut } from 'react-icons/md';
 import { FaFish } from 'react-icons/fa';
 import FishResultsModal from './FishResultsModal';
 import FishUnlockedNotification from './FishUnlockedNotification';
