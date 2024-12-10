@@ -8,10 +8,12 @@ import styles from './FishIdentifier.module.css';
 
 export default function FishIdentifier() {
   const [image, setImage] = useState(null);
+  const [attachedImages, setAttachedImages] = useState([]);
   const [fishInfo, setFishInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
+  const [isAttachedImagesModalOpen, setIsAttachedImagesModalOpen] = useState(false);
   const [showUnlockedNotification, setShowUnlockedNotification] = useState(false);
   const [location, setLocation] = useState(null);
   const videoRef = useRef(null);
@@ -19,6 +21,10 @@ export default function FishIdentifier() {
   const fileInputRef = useRef(null);
   const streamRef = useRef(null);
   const { user } = useContext(UserContext);
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const imageRef = useRef(null);
 
   //So whenever we use the caputre button it changes the isCameraModelOpen state to true and
   //due to which we run the startCamera and stop camera based on the state of that function 
@@ -84,6 +90,35 @@ export default function FishIdentifier() {
     }
   };
 
+  const handleZoomIn = () => {
+    setZoomLevel(prevZoom => Math.min(prevZoom + 0.1, 3));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prevZoom => Math.max(prevZoom - 0.1, 0.5));
+  };
+
+  const handleImageClick = (e) => {
+    if (imageRef.current) {
+      const rect = imageRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      
+      imageRef.current.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+    }
+  };
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % attachedImages.length);
+    setZoomLevel(1);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + attachedImages.length) % attachedImages.length);
+    setZoomLevel(1);
+  };
+
+
   // This function "captures" a single frame from a video feed displayed on the screen and converts it into
   //  a JPEG image. The resulting image is stored in state and can be used in future .
 
@@ -93,6 +128,7 @@ export default function FishIdentifier() {
       context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
       canvasRef.current.toBlob((blob) => {
         setImage(blob);
+        setAttachedImages(prev => [...prev, blob]);
         setIsCameraModalOpen(false);
       }, 'image/jpeg');
     }
@@ -104,6 +140,7 @@ export default function FishIdentifier() {
     const file = event.target.files[0];
     if (file) {
       setImage(file);
+      setAttachedImages(prev => [...prev, file]);
     }
   };
 
@@ -153,6 +190,7 @@ export default function FishIdentifier() {
       alert(error.message || 'Failed to analyze fish. Please try again.');
     } finally {
       setIsLoading(false);
+      setAttachedImages([]);
     }
   };
 
@@ -199,6 +237,15 @@ export default function FishIdentifier() {
               </button>
             </>
           )}
+
+          {attachedImages.length > 0 && (
+            <button 
+              onClick={() => setIsAttachedImagesModalOpen(true)} 
+              className={styles.viewAttachedButton}
+            >
+              <MdImage /> View Attached Images ({attachedImages.length})
+            </button>
+          )}
         </div>
       </div>
 
@@ -238,7 +285,44 @@ export default function FishIdentifier() {
           image={image}
           onClose={() => setIsResultsModalOpen(false)}
         />
-      )}
+      )} 
+
+{isAttachedImagesModalOpen && (
+      <div className={styles.modal} >
+        <div className={styles.modalContent} >
+          <h2 className={styles.modalTitle}>Attached Images</h2>
+          <div className={styles.imageViewerContainer}>
+            <img 
+              ref={imageRef}
+              src={URL.createObjectURL(attachedImages[currentImageIndex])}
+              alt={`Attached image ${currentImageIndex + 1}`}
+              className={styles.attachedImage}
+              style={{ transform: `scale(${zoomLevel})` }}
+              onClick={handleImageClick}
+            />
+            <div className={styles.imageControls} >
+              <button onClick={prevImage} className={styles.imageNavButton} >Previous</button>
+              <button onClick={handleZoomOut} className={styles.zoomButton}><MdZoomOut /></button>
+              <button onClick={handleZoomIn} className={styles.zoomButton} ><MdZoomIn /></button>
+              <button onClick={nextImage} className={styles.imageNavButton}>Next</button>
+            </div>
+            <p className={styles.imageCounter} >
+              Image {currentImageIndex + 1} of {attachedImages.length}
+            </p>
+          </div>
+          <button 
+            onClick={() => {
+              setIsAttachedImagesModalOpen(false);
+              setZoomLevel(1);
+            }} 
+
+            className={styles.closeButton}
+          >
+            <MdClose />
+          </button>
+        </div>
+      </div>
+    )}
     </div>
   );
 };
