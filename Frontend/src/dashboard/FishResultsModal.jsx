@@ -50,9 +50,6 @@ const FishResultsModal = ({ fishInfo, image, onClose }) => {
 
         <h3 className={styles.sectionTitle}>Description</h3>
         <p className={styles.sectionContent}>{fishInfo.description}</p>
-
-        <h3 className={styles.sectionTitle}>Fish Tale</h3>
-        <p className={styles.sectionContent}>{fishInfo.fishStory}</p>
       </div>
     </div>
   );

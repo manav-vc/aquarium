@@ -123,15 +123,21 @@ export default function FishIdentifier() {
   //  a JPEG image. The resulting image is stored in state and can be used in future .
 
   const captureImage = () => {
-    if (videoRef.current && canvasRef.current) {
-      const context = canvasRef.current.getContext('2d');
-      context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-      canvasRef.current.toBlob((blob) => {
+    const video = videoRef.current;
+    if (video) {
+      const stream = video.captureStream();
+      const track = stream.getVideoTracks()[0];
+      const imageCapture = new ImageCapture(track);
+
+      imageCapture.takePhoto().then(blob => {
         setImage(blob);
         setAttachedImages(prev => [...prev, blob]);
         setIsCameraModalOpen(false);
-      }, 'image/jpeg');
+      }).catch(error => {
+        console.error("Error capturing photo:", error);
+      });
     }
+
   };
 
 
