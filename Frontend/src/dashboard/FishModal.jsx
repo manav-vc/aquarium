@@ -33,10 +33,6 @@ export default function FishModal({ fish, onClose }){
           <h3>Description</h3>
           <p>{fish.description}</p>
         </div>
-        <div >
-          <h3>Fish Tale</h3>
-          <p>{fish.fishStory}</p>
-        </div>
       </div>
     </div>
   );
