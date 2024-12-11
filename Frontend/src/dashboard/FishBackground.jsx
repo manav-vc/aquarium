@@ -82,36 +82,6 @@ const fishModelMatcher = (fishName) => {
   return models[Math.floor(Math.random() * models.length)];
 };
 
-
-// Ocean floor with fading edges
-// function OceanFloor() {
-//   const texture = useTexture('./sand.jpg'); // Load sand texture
-//   console.log("text"+texture);
-//   texture.wrapS = texture.wrapT = RepeatWrapping;
-//   texture.repeat.set(10, 10);  // Extended the sand size by repeating the texture more
-
-//   const oceanFloorRef = useRef();
-
-//   useFrame(({ camera }) => {
-//     if (oceanFloorRef.current) {
-//       const distance = camera.position.length();
-//       oceanFloorRef.current.material.opacity = Math.max(0.1, 1 - (distance - 50) / 50);  // Stronger fade-out at edges
-//     }
-//   });
-
-//   return (
-//     <mesh ref={oceanFloorRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -10, 0]} receiveShadow>
-//       <planeGeometry args={[50, 50]} />  {/* Larger sand plane (sand ground )*/}
-//       <meshStandardMaterial
-//         map={texture}
-//         metalness={0.2}
-//         roughness={0.9}
-//         color={new THREE.Color(0x2d4163)}
-        
-//       />
-//     </mesh>
-//   );
-// }
 function OceanFloor() {
   // Load sand texture
   const texture = useTexture("./sand.jpg");
