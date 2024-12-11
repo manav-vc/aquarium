@@ -80,7 +80,6 @@ export default function FishIdentifier() {
     }
   };
 
-  //This function allows the user to 
   const stopCamera = () => {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
