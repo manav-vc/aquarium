@@ -109,7 +109,7 @@ function OceanFloor() {
       position={[0, -10, 0]} // Slightly below ground level
       receiveShadow
     >
-      <planeGeometry args={[50, 50]} /> {/* Larger plane */}
+      <planeGeometry args={[35, 30]} /> {/* Larger plane */}
       <meshStandardMaterial
         map={texture}
         metalness={0.2}
