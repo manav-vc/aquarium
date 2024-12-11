@@ -58,6 +58,7 @@ export default function FishIdentifier() {
     }
   }, []);
 
+  
 
   //This function basically starts the camera 
   const startCamera = async () => {
