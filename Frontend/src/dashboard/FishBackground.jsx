@@ -38,7 +38,7 @@ function Bubbles() {
     <group ref={bubbleRef}>
       {bubbles.map((bubble, i) => (
         <Sphere key={i} args={[bubble.size, 16, 16]} position={[bubble.x, bubble.y, bubble.z]}>
-          <meshStandardMaterial color="white" opacity={0.5} transparent />
+          <meshStandardMaterial color="lightblue" opacity={0.5} transparent />
         </Sphere>
       ))}
     </group>
@@ -84,34 +84,73 @@ const fishModelMatcher = (fishName) => {
 
 
 // Ocean floor with fading edges
+// function OceanFloor() {
+//   const texture = useTexture('./sand.jpg'); // Load sand texture
+//   console.log("text"+texture);
+//   texture.wrapS = texture.wrapT = RepeatWrapping;
+//   texture.repeat.set(10, 10);  // Extended the sand size by repeating the texture more
+
+//   const oceanFloorRef = useRef();
+
+//   useFrame(({ camera }) => {
+//     if (oceanFloorRef.current) {
+//       const distance = camera.position.length();
+//       oceanFloorRef.current.material.opacity = Math.max(0.1, 1 - (distance - 50) / 50);  // Stronger fade-out at edges
+//     }
+//   });
+
+//   return (
+//     <mesh ref={oceanFloorRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -10, 0]} receiveShadow>
+//       <planeGeometry args={[50, 50]} />  {/* Larger sand plane (sand ground )*/}
+//       <meshStandardMaterial
+//         map={texture}
+//         metalness={0.2}
+//         roughness={0.9}
+//         color={new THREE.Color(0x2d4163)}
+        
+//       />
+//     </mesh>
+//   );
+// }
 function OceanFloor() {
-  const texture = useTexture('/sand.jpg'); // Load sand texture
-  texture.wrapS = texture.wrapT = RepeatWrapping;
-  texture.repeat.set(10, 10);  // Extended the sand size by repeating the texture more
+  // Load sand texture
+  const texture = useTexture("./sand.jpg");
+  console.log("Texture loaded:", texture);
+
+  // Ensure texture properties are set before use
+  texture.wrapS = RepeatWrapping;
+  texture.wrapT = RepeatWrapping;
+  texture.needsUpdate = true; // Ensure changes take effect
+  texture.repeat.set(5, 5); // Repeat the texture
 
   const oceanFloorRef = useRef();
 
+  // Adjust opacity of the ocean floor based on camera distance
   useFrame(({ camera }) => {
     if (oceanFloorRef.current) {
       const distance = camera.position.length();
-      oceanFloorRef.current.material.opacity = Math.max(0.1, 1 - (distance - 50) / 50);  // Stronger fade-out at edges
+      oceanFloorRef.current.material.opacity = Math.max(0.1, 1 - (distance - 50) / 50);
     }
   });
 
   return (
-    <mesh ref={oceanFloorRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -10, 0]} receiveShadow>
-      <planeGeometry args={[50, 50]} />  {/* Larger sand plane (sand ground )*/}
+    <mesh
+      ref={oceanFloorRef}
+      rotation={[-Math.PI / 2, 0, 0]} // Rotate to lay flat
+      position={[0, -10, 0]} // Slightly below ground level
+      receiveShadow
+    >
+      <planeGeometry args={[50, 50]} /> {/* Larger plane */}
       <meshStandardMaterial
         map={texture}
         metalness={0.2}
         roughness={0.9}
-        color={new THREE.Color(0x2d4163)}
-        transparent
+        color={new THREE.Color(0xffffff)} // Optional tint
+        side={THREE.DoubleSide}
       />
     </mesh>
   );
 }
-
 // Ocean skybox wrapping the scene with one ocean texture
 function OceanSkybox() {
   const oceanTexture = useTexture('./ocean.jpg'); // Load the ocean texture
