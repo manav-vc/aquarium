@@ -85,7 +85,6 @@ const fishModelMatcher = (fishName) => {
 function OceanFloor() {
   // Load sand texture
   const texture = useTexture("./sand.jpg");
-  console.log("Texture loaded:", texture);
 
   // Ensure texture properties are set before use
   texture.wrapS = RepeatWrapping;
